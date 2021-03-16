@@ -27,6 +27,10 @@ app.get('/patientSignup',(req,res)=>{
     res.render('patientSignup');
 })
 
+app.get('/admin',(req,res)=>{
+    res.render('adminlogin');
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
