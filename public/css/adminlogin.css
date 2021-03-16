@@ -8347,7 +8347,6 @@
       outline: none; }
     .btn.btn-primary {
       background: #f35588;
-      border: 1px solid #f35588;
       color: #fff;
       background: #f75959;
       background: -moz-linear-gradient(-45deg, #f75959 0%, #f35587 100%);
@@ -8360,8 +8359,7 @@
       background: linear-gradient(to right, #5a3f37, #2c7744); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f75959', endColorstr='#f35587', GradientType=1 ); }
       .btn.btn-primary:hover {
-        border: 1px solid #f35588;
-        background: #f35588;
+        background: #049b5c;
         color: #fff; }
       .btn.btn-primary.btn-outline-primary {
         border: 1px solid #f35588;
