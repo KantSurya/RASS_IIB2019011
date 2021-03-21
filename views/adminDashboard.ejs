@@ -1,0 +1,26 @@
+<%- include('partials/header.ejs') %>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid ">
+        <a class="navbar-brand" href="/">Sahayata</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-5">
+                    <a class="nav-link active" aria-current="page" href="/admin/<%= data._id %>">
+                        Hi, <%= data.firstName %>
+                    </a>
+                </li>
+                <li class="nav-item mr-5">
+                    <a class="nav-link active" aria-current="page" href="/admin/new">
+                        Add
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<%- include('partials/footer.ejs') %>
