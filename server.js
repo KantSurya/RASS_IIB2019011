@@ -6,6 +6,7 @@ const port = 3000;
 const mongoose = require('mongoose');
 const Doctor = require('./models/doctor');
 const Admin = require('./models/admin');
+const Patient =require('./models/patient');
 
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -37,6 +38,7 @@ app.get('/doctorSignup',(req,res)=>{
     res.render('doctorSignup');
 })
 
+//Patient Start
 app.get('/patientSignup',(req,res)=>{
     res.render('patientSignup');
 })
@@ -44,6 +46,24 @@ app.get('/patientSignup',(req,res)=>{
 app.get('/admin',(req,res)=>{
     res.render('adminlogin');
 })
+
+app.post('/patientSignup',async (req,res)=>{
+    const {firstName,lastName,gender,email,phone,password,city,age}=req.body;
+    const new_patient=new Patient({
+        firstName:firstName,
+        lastName:lastName,
+        gender:gender,
+        email:email,
+        phone:phone,
+        password:password,
+        city:city,
+        age:age
+    });
+    await new_patient.save();
+    res.redirect('/login');
+})
+
+//Patient End
 
 
 
