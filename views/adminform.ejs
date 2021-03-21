@@ -1,0 +1,24 @@
+<%- include('partials/header.ejs') %>
+
+
+<form action = "/admin/new" method = "POST">
+    <div>
+        <label for="firstName">FirstName: </label>
+        <input type="text" name="firstName" placeholder="First Name" id = "firstName">
+    </div>
+    <div>
+        <label for="lastName">LasName: </label>
+        <input type="text" name="lastName" placeholder="Last Name" id = "lastName">
+    </div>
+    <div>
+        <label for="email">Email: </label>
+        <input type="email" name="email" placeholder="Email" id = "email">
+    </div>
+    <div>
+        <label for="password">Password : </label>
+        <input type="password" name="password" placeholder="Password" id = "password">
+    </div>
+    <input type="submit">
+</form>
+
+<%- include('partials/footer.ejs') %>
