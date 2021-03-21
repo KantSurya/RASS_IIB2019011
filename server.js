@@ -6,7 +6,7 @@ const port = 3000;
 const mongoose = require('mongoose');
 const Doctor = require('./models/doctor');
 const Admin = require('./models/admin');
-const Patient =require('./models/patient');
+const Patient = require('./models/patient');
 
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -34,9 +34,39 @@ app.get('/signup',(req,res)=>{
     res.redirect('/doctorSignup');
 })
 
+// Doctor Start
+
 app.get('/doctorSignup',(req,res)=>{
     res.render('doctorSignup');
 })
+
+app.post('/doctorSignup', (req,res)=>{
+    const {firstName,lastName,email,password,age,license,specialization} = req.body;
+    const newDoctor = {
+        firstName   :       firstName, 
+        lastName    :       lastName,
+        email       :       email,
+        password    :       password,
+        age         :       age,
+        license     :       license,
+        specialization :    specialization,
+        isVerified  :       false
+    }
+    console.log(newDoctor);
+    const doctorToInsert = new Doctor(newDoctor);
+    doctorToInsert.save()
+    .then(()=>{
+        console.log("Doctor added in DB");
+    })
+    .catch((e)=>{
+        console.log(e);
+    })
+    res.redirect('/login');
+})
+
+// Doctor end
+
+
 
 //Patient Start
 app.get('/patientSignup',(req,res)=>{
