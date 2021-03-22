@@ -1,0 +1,36 @@
+<%- include('partials/header.ejs') %>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid ">
+        <a class="navbar-brand" href="/">Sahayata</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-5">
+                    <a class="nav-link active" aria-current="page" href="/patient/<%= account._id %>">
+                        Hi, <%= account.firstName %>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h2>
+    Name : <%= doctor.firstName %>
+</h2>
+<ul>
+    <li><b>Email :</b> <%= doctor.email %></li>
+    <li><b>Age</b> : <%= doctor.age %></li>
+    <li><b>Specialization</b> : <%= doctor.specialization %> </li>
+</ul>
+
+<a href="/patient/<%=account._id%>/viewdoctors">All Doctors</a>
+
+<form action="/patient/<%=account._id%>/makeappointment/<%=doctor._id%>">
+    <button>New Appointment</button>
+</form>
+
+<%- include('partials/footer.ejs') %>
