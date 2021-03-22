@@ -45,8 +45,8 @@ const doctorSchema = new mongoose.Schema({
         required : [true,'Please enter your specialization as in your license']
     },
     isVerified : {
-        type : Boolean,
-        default : false
+        type : Number,
+        default : 0
     }
 })
 

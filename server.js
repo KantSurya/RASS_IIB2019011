@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const { urlencoded } = require('body-parser');
+const methodOverride = require('method-override')
 const port = 3000;
 const mongoose = require('mongoose');
 const Doctor = require('./models/doctor');
@@ -16,10 +17,13 @@ mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, u
     console.log(e);
 })
 
+mongoose.set('useFindAndModify', false);
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views')); 
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'))
 
 
 app.get('/', (req, res) => {
@@ -47,8 +51,10 @@ app.post('/login',async (req,res)=>{
     else{
         account=await Doctor.findOne({email:username,password:password});
         console.log(account);
-        if(account){            
-            res.send("Welcome Doctor!!!");
+        if(account){
+            if(account.isVerified == 0) res.send("Please wait for the admin");          
+            if(account.isVerified == 2) res.send("You are rejected soory :(");          
+            else res.send("Welcome Doctor!!!");
         }
         else{
             res.redirect('/login');
@@ -168,8 +174,30 @@ app.post('/admin/new',async (req,res)=>{
 app.get('/admin/:id', async(req,res)=>{
     const { id } = req.params; 
     const data = await Admin.findById(id);
-    console.log(data);
-    res.render('adminDashboard',{ data });
+    const doctor = await Doctor.find({isVerified : 0}); 
+    res.render('adminDashboard',{ data ,doctor});
+})
+
+
+app.patch('/admin/:adid/:docid', async(req,res)=>{
+    const {adid , docid} = req.params;
+    Doctor.findByIdAndUpdate(docid,{ "isVerified" : "1"}, function(err,result){
+        if(err){
+            console.log(err);
+        }
+    });
+    res.redirect(`/admin/${adid}`);
+
+})
+
+app.delete('/admin/:adid/:docid', async(req,res)=>{
+    const {adid , docid} = req.params;
+    Doctor.findByIdAndUpdate(docid,{ "isVerified" : "2"}, function(err,result){
+        if(err){
+            console.log(err);
+        }
+    });
+    res.redirect(`/admin/${adid}`);
 })
 
 //###### ADMIN END #######
