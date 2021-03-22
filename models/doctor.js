@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-// const doctorSchema = new Schema({
-//     firstName   :   String,
-//     lastName    :   String,
-//     email       :   String,
-//     speciality  :   String, 
-//     license     :   String,
-//     password    :   String,
-//     age         :   Number,
-//     isVerfied   :   Boolean
-// });
+const Appointment = require('./appointment.js');
 
 const doctorSchema = new mongoose.Schema({
     firstName : {
@@ -47,7 +37,8 @@ const doctorSchema = new mongoose.Schema({
     isVerified : {
         type : Number,
         default : 0
-    }
+    },
+    appointmentRequest : [{type : Schema.Types.ObjectId,ref : 'Appointment'}]
 })
 
 const Doctor = mongoose.model('Doctor',doctorSchema);

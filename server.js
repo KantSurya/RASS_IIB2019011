@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const Doctor = require('./models/doctor');
 const Admin = require('./models/admin');
 const Patient = require('./models/patient');
+const Appointment=require('./models/appointment');
 
+// --------------------------------------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     console.log("Connection Open");
@@ -16,16 +18,17 @@ mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, u
 .catch((e)=>{
     console.log(e);
 })
-
-mongoose.set('useFindAndModify', false);
-
+// --------------------------------------------------------------------------------------------------------------
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views')); 
+mongoose.set('useFindAndModify', false);
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'))
+// --------------------------------------------------------------------------------------------------------------
 
-
+// Routes are defined below
+// --------------------------------------------------------------------------------------------------------------
 app.get('/', (req, res) => {
   res.render('home');
 });
@@ -35,6 +38,7 @@ app.get('/signup',(req,res)=>{
 })
 
 //###### LOGIN START #######
+// --------------------------------------------------------------------------------------------------------------
 app.get('/login',(req,res)=>{
     res.render('login');
 })
@@ -46,7 +50,8 @@ app.post('/login',async (req,res)=>{
     let account=await Patient.findOne({email:username,password:password});
     console.log(account);    
     if(account){        
-        res.send("Welcome Patient!!!");
+        res.redirect(`/patient/${account._id}`);
+        // res.send("Welcome Patient!!!");
     }
     else{
         account=await Doctor.findOne({email:username,password:password});
@@ -63,10 +68,12 @@ app.post('/login',async (req,res)=>{
 })
 
 //###### LOGIN END #######
-
+// --------------------------------------------------------------------------------------------------------------
 
 
 //###### DOCTOR START #######
+// Doctor Signup 
+// --------------------------------------------------------------------------------------------------------------
 app.get('/doctorSignup',(req,res)=>{
     res.render('doctorSignup');
 })
@@ -94,17 +101,18 @@ app.post('/doctorSignup', (req,res)=>{
     })
     res.redirect('/login');
 })
-
+// Doctor Signup Ends
+// --------------------------------------------------------------------------------------------------------------
 //###### DOCTOR END #######
-
 
 
 //###### PATIENT START #######
 
+// Patient Signup Starts here
+// --------------------------------------------------------------------------------------------------------------
 app.get('/patientSignup',(req,res)=>{
     res.render('patientSignup');
 })
-
 app.post('/patientSignup',async (req,res)=>{
     const {firstName,lastName,gender,email,phone,password,city,age}=req.body;
     const new_patient=new Patient({
@@ -120,8 +128,50 @@ app.post('/patientSignup',async (req,res)=>{
     await new_patient.save();
     res.redirect('/login');
 })
+// Patient Signup ends here
+// --------------------------------------------------------------------------------------------------------------
 
-// app.get('/patient/:id')
+//Patient Dashboard
+// --------------------------------------------------------------------------------------------------------------
+// directly to patientDashboard
+app.get('/patient/:id',async (req,res)=>{
+    let {id}=req.params;
+    let account=await Patient.findById(id);
+    res.render('patientDashboard',{account});
+})
+
+// view list of all doctors in our database
+app.get('/patient/:id/viewdoctors',async (req,res)=>{
+    let {id}=req.params;
+    let account=await Patient.findById(id);
+    let doctorData=await Doctor.find({});
+    res.render('patientViewingDoctors.ejs',{account,doctorData});
+})
+
+// view a particular doctor
+app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
+    let {id,docid}=req.params;
+    let account=await Patient.findById(id);
+    let doctor=await Doctor.findById(docid);
+    res.render('patientViewingDoctorProfile.ejs',{account,doctor});
+})
+
+// make an appointment with a particular doctor
+app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
+    let {id,docid}=req.params;
+    let account=await Patient.findById(id);
+    const foundDoctor = await Doctor.findById(docid);
+    let newAppointment = new Appointment();
+    newAppointment.doctorID.push(foundDoctor);
+    const appointmentSaved = await newAppointment.save();
+    foundDoctor.appointmentRequest.push(appointmentSaved);
+    const asdf = await foundDoctor.save();
+
+    // redirect to the doctor profile view page 
+    res.redirect(`/patient/${id}/viewdoctors/${docid}`);
+})
+// Patient Dashboard ends here
+// --------------------------------------------------------------------------------------------------------------
 //###### PATIENT END #######
 
 

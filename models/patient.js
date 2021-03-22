@@ -1,8 +1,4 @@
 const mongoose=require('mongoose');
-mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(()=>console.log("Mongoose Connection Open!!!"))
-    .catch(err=>console.log("Mongoose Connection ERROR: ",err));
-
 const patientSchema=new mongoose.Schema({
     firstName:{
         type:String,
