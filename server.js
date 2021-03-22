@@ -26,16 +26,41 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/login',(req,res)=>{
-    res.render('login');
-})
-
 app.get('/signup',(req,res)=>{
     res.redirect('/doctorSignup');
 })
 
-// Doctor Start
+//###### LOGIN START #######
+app.get('/login',(req,res)=>{
+    res.render('login');
+})
 
+app.post('/login',async (req,res)=>{
+    let {username,password}=req.body;
+    console.log("Username: ",username);
+    console.log("Password: ",password);
+    let account=await Patient.findOne({email:username,password:password});
+    console.log(account);    
+    if(account){        
+        res.send("Welcome Patient!!!");
+    }
+    else{
+        account=await Doctor.findOne({email:username,password:password});
+        console.log(account);
+        if(account){            
+            res.send("Welcome Doctor!!!");
+        }
+        else{
+            res.redirect('/login');
+        }
+    }
+})
+
+//###### LOGIN END #######
+
+
+
+//###### DOCTOR START #######
 app.get('/doctorSignup',(req,res)=>{
     res.render('doctorSignup');
 })
@@ -64,17 +89,14 @@ app.post('/doctorSignup', (req,res)=>{
     res.redirect('/login');
 })
 
-// Doctor end
+//###### DOCTOR END #######
 
 
 
-//Patient Start
+//###### PATIENT START #######
+
 app.get('/patientSignup',(req,res)=>{
     res.render('patientSignup');
-})
-
-app.get('/admin',(req,res)=>{
-    res.render('adminlogin');
 })
 
 app.post('/patientSignup',async (req,res)=>{
@@ -93,11 +115,16 @@ app.post('/patientSignup',async (req,res)=>{
     res.redirect('/login');
 })
 
-//Patient End
+// app.get('/patient/:id')
+//###### PATIENT END #######
 
 
 
-//Admin Start
+//###### ADMIN STARTt #######
+
+app.get('/admin',(req,res)=>{
+    res.render('adminlogin');
+})
 
 //renders the admin login page
 app.post('/admin',async (req,res)=>{
@@ -145,7 +172,8 @@ app.get('/admin/:id', async(req,res)=>{
     res.render('adminDashboard',{ data });
 })
 
-//Admin End
+//###### ADMIN END #######
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
