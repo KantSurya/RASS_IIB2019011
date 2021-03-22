@@ -40,7 +40,7 @@ const doctorSchema = new mongoose.Schema({
     },
     specialization : {
         type : String,
-        enum : ['dentist','dermatologists','gynecologist','pediatrician'],
+        enum : ['dentist','dermatologist','gynecologist','pediatrician'],
         lowercase : true,
         required : [true,'Please enter your specialization as in your license']
     },
