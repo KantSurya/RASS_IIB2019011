@@ -23,4 +23,14 @@
     </div>
 </nav>
 
+<% for(let doc of doctor){ %>
+    <h2> <%=doc.firstName%> </h2>
+    <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=PATCH" method="POST">
+        <button>Accept</button>
+    </form>
+    <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=DELETE" method="POST">
+        <button>Reject</button>
+    </form>
+<%}%>
+
 <%- include('partials/footer.ejs') %>
