@@ -1,44 +1,39 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(()=>console.log("Mongoose Connection Open!!!"))
-    .catch(err=>console.log("Mongoose Connection ERROR: ",err));
-
 const Doctor=require('../models/doctor.js');
+
 const doctorSeeds = [
     {
-        firstName : "Rishi",
-        lastName : "Gupta",
-        email : "guptaRishi@gmail.com",
-        password : "mypass",
-        age : 32,
-        license : "mylicenseismylicense",
+        firstName : "Severus",
+        lastName : "Snape",
+        email : "severus@gmail.com",
+        password : "always",
+        age : 47,
+        license : "snape license",
         specialization : "dentist"
-    },
-    {
-        firstName : "Bron",
-        lastName : "Weasley",
-        email : "bron@gmail.com",
-        password : "bronpassword",
-        age : 36,
-        license : "bronlicense",
-        specialization : "gynecologist",
     },
     {
         firstName : "Carry",
         lastName : "Potter",
         email : "carry@gmail.com",
-        password : "carrypassword",
+        password : "minny",
         age : 42,
         license : "carrylicense",
         specialization : "pediatrician",
     },
     {
+        firstName : "Bron",
+        lastName : "Weasley",
+        email : "bron@gmail.com",
+        password : "chermoine",
+        age : 36,
+        license : "bronlicense",
+        specialization : "gynecologist",
+    },
+    {
         firstName : "Chermoine",
         lastName : "Granger",
         email : "chermoine@gmail.com",
-        password : "hermoinePassword",
+        password : "rum",
         age : 35,
         license : "chermoinelicense",
         specialization : "dermatologist"

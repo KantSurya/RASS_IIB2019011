@@ -9,23 +9,33 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-5">
-                    <a class="nav-link active" aria-current="page" href="/patient/<%= account._id %>">
-                        Hi, <%= account.firstName %>
+                    <a class="nav-link active" aria-current="page" href="/doctor/<%= doctor._id %>">
+                        Hi, <%= doctor.firstName %>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<h1> 
-    All Doctors in our Database
-</h1>
-<% for(let doc of doctorData){ %>
-    <li>
-        <a href="/patient/<%=account._id%>/viewDoctors/<%=doc._id%>"><%=doc.firstName + " " +  doc.lastName%></a>
-    </li>
-<% } %>
 
-<a href="/patient/<%=account._id%>">Back To Dashboard</a>
+<div>    
+    <h3>View Appointment Requests from Patients</h3>
+</div>
+<div>    
+    <h3>Pending Appointment Requests from Patients</h3>
+    <ul>
+         <% for(let pat of pendingApps) {%> 
+            <li><%=pat.patientID.firstName+" "+pat.patientID.lastName%></li>
+         <% } %>     
+    </ul>
+</div>
+<div>    
+    <h3>Ongoing Appointments with Patients</h3>
+    <ul>
+        <% for(let pat of ongoingApps) {%> 
+            <li><%=pat.patientID.firstName+" "+pat.patientID.lastName%></li>
+         <% } %>  
+    </ul>
+</div>
 
 <%- include('partials/footer.ejs') %>

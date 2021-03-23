@@ -59,7 +59,7 @@ app.post('/login',async (req,res)=>{
         if(account){
             if(account.isVerified == 0) res.send("Please wait for the admin");          
             if(account.isVerified == 2) res.send("You are rejected soory :(");          
-            else res.send("Welcome Doctor!!!");
+            else res.redirect(`/doctor/${account._id}`);
         }
         else{
             res.redirect('/login');
@@ -102,6 +102,15 @@ app.post('/doctorSignup', (req,res)=>{
     res.redirect('/login');
 })
 // Doctor Signup Ends
+
+//Doctor Dashboard
+app.get('/doctor/:id',async (req,res)=>{
+    let {id}=req.params;
+    let doctor =await Doctor.findById(id);
+    let pendingApps=await Appointment.find({doctorID:id,isAccepted:0}).populate('patientID');
+    let ongoingApps=await Appointment.find({doctorID:id,isAccepted:1}).populate('patientID');
+    res.render('doctorDashboard',{doctor,pendingApps,ongoingApps});
+})
 // --------------------------------------------------------------------------------------------------------------
 //###### DOCTOR END #######
 
@@ -159,18 +168,41 @@ app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
 // make an appointment with a particular doctor
 app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
     let {id,docid}=req.params;
-    let account=await Patient.findById(id);
+    // let account=await Patient.findById(id);
     const foundDoctor = await Doctor.findById(docid);
+    const foundPatient = await Patient.findById(id);
+
     let newAppointment = new Appointment();
-    newAppointment.doctorID.push(foundDoctor);
+    // adding doctor and patient id to appointment object
+    newAppointment.doctorID=foundDoctor;
+    newAppointment.patientID=foundPatient;
+
+    // save the appointment in database
     const appointmentSaved = await newAppointment.save();
+
+    // add appointment id in doctors appointmentRequest 
     foundDoctor.appointmentRequest.push(appointmentSaved);
-    const asdf = await foundDoctor.save();
+    await foundDoctor.save();
+
+    // add appointment id in patient appointmentRequest 
+    foundPatient.appointmentRequest.push(appointmentSaved);
+    await foundPatient.save();
 
     // redirect to the doctor profile view page 
     res.redirect(`/patient/${id}/viewdoctors/${docid}`);
 })
 // Patient Dashboard ends here
+
+//Appointment(chat) Window of patient
+app.get('/appointment/:id', async (req,res)=>{
+    const {id} = req.params;
+    const appointment = await Appointment.findById(id);
+    console.log(appointment);
+    const doctor = await Doctor.findById(appointment.doctorID);
+    const patient = await Patient.findById(appointment.patientID);
+    res.render('appointmentWindow', {appointment,patient,doctor});
+    
+})
 // --------------------------------------------------------------------------------------------------------------
 //###### PATIENT END #######
 
@@ -256,3 +288,4 @@ app.delete('/admin/:adid/:docid', async(req,res)=>{
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
+
