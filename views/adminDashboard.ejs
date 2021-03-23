@@ -1,4 +1,15 @@
-<%- include('partials/header.ejs') %>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahayata</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="/css/admindash.css">
+</head>
+
+<body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid ">
@@ -23,14 +34,36 @@
     </div>
 </nav>
 
-<% for(let doc of doctor){ %>
-    <h2> <%=doc.firstName%> </h2>
-    <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=PATCH" method="POST">
-        <button>Accept</button>
-    </form>
-    <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=DELETE" method="POST">
-        <button>Reject</button>
-    </form>
-<%}%>
+<div class="team-boxed">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">New Requests </h2>
+        </div>
+        <div class="row people">
+            <% for(let doc of doctor){ %>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="/assets/docpro.jpg">
+                        <h3 class="name"><%=doc.firstName%>  <%= doc.lastName %></h3>
+                        <p class="title"><%= doc.specialization %></p>
+                        <p class="description">Age - <%= doc.age %></p>
+                        <p class="description">Licence - <%= doc.license %></p>
+                        <div class="d-flex flex-row justify-content-center">
+                            <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=PATCH" method="POST" class="p-2">
+                            <button class="btn btn-success">Accept</button>
+                            </form>
+                            <form form action="/admin/<%= data._id %>/<%= doc._id %>?_method=DELETE" method="POST" class="p-2">
+                                <button class="btn btn-danger">Reject</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+</div>
 
-<%- include('partials/footer.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
