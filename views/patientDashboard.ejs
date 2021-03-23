@@ -22,6 +22,16 @@
     <h3><a href="/patient/<%=account._id%>/viewdoctors">Make an Appointment | View Pool Of Doctors</a></h3>
 </div>
 <div>    
+    <h3>All appointments with Doctors</h3>
+    <ul>
+        <% for(let appointment of account.appointmentRequest){ %>
+            <li>
+                <a href="/appointment/<%=appointment._id %>"> <%= appointment._id  %></a>
+            </li>
+        <% } %> 
+    </ul>
+</div>
+<div>    
     <h3>Pending Appointments with Doctors</h3>
     <ul>
 
