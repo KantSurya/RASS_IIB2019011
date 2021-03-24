@@ -1,4 +1,7 @@
 const mongoose=require('mongoose');
+const Schema=mongoose.Schema;
+const Appointment = require('./appointment.js');
+
 const patientSchema=new mongoose.Schema({
     firstName:{
         type:String,
@@ -31,7 +34,8 @@ const patientSchema=new mongoose.Schema({
         required:true,
         lowercase:true,
         enum:['male','female']
-    }
+    },
+    appointmentRequest : [{type : Schema.Types.ObjectId,ref : 'Appointment'}]
 });
 
 const Patient=mongoose.model('Patient',patientSchema);

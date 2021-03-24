@@ -1,0 +1,47 @@
+01. added doctor dashboard.ejs file
+    a.) displays names of patients who have requested appointment with doctor
+    b.) displays names of patients who have an ongoing appointment with doctor
+02. added doctorDashboard route in server.js
+    a.) renders doctorDashboard.ejs 
+    b.) uses populate() to send data
+
+    
+01. /models/appointment.js
+    Added patientID in appointment model
+
+02. /models.patient.js
+    Added appointmentRequest in patient model
+
+03. /models  patient.js, doctor.js
+    New appointment : appointment id added into patient and doctor both
+
+04. /views/patientDashboard.ejs
+    showing all appointments in patient dashboard
+05. /views/appointmentDashboard.ejs
+    made an appointment/chat page and currently display name of doctor and patient
+
+06. /seeds/doctor.js
+    doctor seeds update, easy password added
+
+07. /seeds/seeds.js
+    new seeds.js create to seed all three collections at once
+
+08. /models/appointment.js
+    appointment object : changed doctorID from array object to a single element
+
+
+01. Admin Dashboard UI Added
+
+
+
+
+24-03-2020
+
+01. /doctorDashboard.ejs
+    added cards for approved appointments
+02. /doctorAppointmentRequest.ejs
+    added cards for pending appointments 
+03. /patientDashboard.ejs
+    // pending, ongoing, rejected appointment cards added
+04. /patientViewingDoctors.ejs
+    // added sort doctors by category feature, // need to work more on design part 

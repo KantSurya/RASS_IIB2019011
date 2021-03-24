@@ -1,0 +1,18 @@
+-> Admin
+    -> Admin Login (UC 16) [complete]
+    -> Add new admin (UC 19) [complete]
+    -> Admin has a queue of request of doctors (UC 17) [complete]
+    -> Accept and reject doctor request (UC 17) [complete]
+
+-> Doctor 
+    -> Doctor Signup (UC 11) [complete]
+    -> Doctor Login | doctor has to wait for admin to accept its request (UC 12) [complete]
+    -> Doctor Dashboard | View Appointments (UC 13) [working]
+
+-> Patient 
+    -> Patient Signup (UC 01) [complete]
+    -> Patient Login  (UC 02) [complete]
+    -> Patient Dashboard | view appointments (UC 5) [working]
+    -> View All Doctors (UC 5) [working]
+    -> Send an appointment request (UC 5) [complete]
+    -> Appointment route defined  (UC 6) [working]

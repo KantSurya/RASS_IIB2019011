@@ -1,12 +1,4 @@
 const mongoose=require('mongoose');
-mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(()=>console.log("Mongoose Connection Open!!!"))
-    .catch(err=>console.log("Mongoose Connection ERROR: ",err));
-
-// mongoose.connection.db.dropCollection("patients")
-//     .then(()=>console.log("Patients collection dropped successfully!!!"))
-//     .catch(err=>console.log("Error in dropping Patients collection!!"));
-
 const Patient=require('../models/patient.js');
 
 const emptyCollection=async ()=>{
@@ -48,7 +40,11 @@ const seedCollection=async()=>{
 }
 
 emptyCollection()
-    .then(()=>seedCollection());
+.then(()=>seedCollection())
+.then(()=>console.log("Patient Added in DB"))
+.catch(()=>{
+    console.log("Error in adding patient")
+})
 
 
 

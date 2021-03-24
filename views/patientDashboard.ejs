@@ -1,4 +1,12 @@
-<%- include('partials/header.ejs') %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome <%= patient.firstName %> | Sahayata</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="/css/admindash.css">
+</head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid ">
@@ -9,8 +17,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-5">
-                    <a class="nav-link active" aria-current="page" href="/patient/<%= account._id %>">
-                        Hi, <%= account.firstName %>
+                    <a class="nav-link active" aria-current="page" href="/patient/<%= patient._id %>">
+                        Hi, <%= patient.firstName %>
                     </a>
                 </li>
             </ul>
@@ -19,19 +27,97 @@
 </nav>
 
 <div>    
-    <h3><a href="/patient/<%=account._id%>/viewdoctors">Make an Appointment | View Pool Of Doctors</a></h3>
-</div>
-<div>    
-    <h3>Pending Appointments with Doctors</h3>
-    <ul>
-
-    </ul>
-</div>
-<div>    
-    <h3>Ongoing Appointments with Doctors</h3>
-    <ul>
-        
-    </ul>
+    <h3><a href="/patient/<%=patient._id%>/viewdoctors">Make an Appointment | View Pool Of Doctors</a></h3>
 </div>
 
-<%- include('partials/footer.ejs') %>
+<!-- // Adding temporary display cards for accepted appointments -->
+
+<div class="team-boxed">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Active Appointments</h2>
+        </div>
+        <div class="row people">
+            <% for(let appointment of ongoingApps){ %>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="/assets/patpro.jpg">
+                        <h3 class="name"><%=appointment.doctorID.firstName%>  <%= appointment.doctorID.lastName %></h3>
+                        <p class="title"><%= appointment.doctorID.specialization %></p>
+                        <p class="description">Age - <%= appointment.doctorID.age %></p>
+                        <p class="description">Description - Help me Plss ...</p>
+                        <div class="d-flex flex-row justify-content-center">
+                            <form action="/appointment/<%= appointment._id %>" method="GET" class="p-2">
+                                <button class="btn btn-success">View</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <%  }  %>
+        </div>
+    </div>
+</div>
+
+<!-- // Accepted appointment cards end here -->
+
+
+<!-- // Adding temporary display cards for pending appointments -->
+<div class="team-boxed">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Pending Appointments</h2>
+        </div>
+        <div class="row people">
+            <% for(let appointment of pendingApps){ %>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="/assets/patpro.jpg">
+                        <h3 class="name"><%=appointment.doctorID.firstName%>  <%= appointment.doctorID.lastName %></h3>
+                        <p class="title"><%= appointment.doctorID.specialization %></p>
+                        <p class="description">Age - <%= appointment.doctorID.age %></p>
+                        <p class="description">Description - Help me Plss ...</p>
+                        <div class="d-flex flex-row justify-content-center">
+                            <form action="" method="GET" class="p-2">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <%  }  %>
+        </div>
+    </div>
+</div>
+<!-- // Pending appointment cards end here -->
+
+<!-- // Adding temporary display cards for rejected appointments -->
+
+<div class="team-boxed">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Rejected Appointments</h2>
+        </div>
+        <div class="row people">
+            <% for(let appointment of ongoingApps){ %>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="/assets/patpro.jpg">
+                        <h3 class="name"><%=appointment.doctorID.firstName%>  <%= appointment.doctorID.lastName %></h3>
+                        <p class="title"><%= appointment.doctorID.specialization %></p>
+                        <p class="description">Age - <%= appointment.doctorID.age %></p>
+                        <p class="description">Description - Help me Plss ...</p>
+                        <div class="d-flex flex-row justify-content-center">
+                            <form action="" method="GET" class="p-2">
+                                <button class="btn btn-success">Acknowledge</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <%  }  %>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

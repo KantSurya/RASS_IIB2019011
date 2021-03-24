@@ -9,7 +9,7 @@ const Doctor = require('./models/doctor');
 const Admin = require('./models/admin');
 const Patient = require('./models/patient');
 const Appointment=require('./models/appointment');
-
+const categories=['dentist','dermatologist','gynecologist','pediatrician'];
 // --------------------------------------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -59,7 +59,7 @@ app.post('/login',async (req,res)=>{
         if(account){
             if(account.isVerified == 0) res.send("Please wait for the admin");          
             if(account.isVerified == 2) res.send("You are rejected soory :(");          
-            else res.send("Welcome Doctor!!!");
+            else res.redirect(`/doctor/${account._id}`);
         }
         else{
             res.redirect('/login');
@@ -102,6 +102,48 @@ app.post('/doctorSignup', (req,res)=>{
     res.redirect('/login');
 })
 // Doctor Signup Ends
+
+//Doctor Dashboard
+app.get('/doctor/:id',async (req,res)=>{
+    let {id}=req.params;
+    let doctor =await Doctor.findById(id);
+    let pendingApps=await Appointment.find({doctorID:id,isAccepted:0}).populate('patientID');
+    let ongoingApps=await Appointment.find({doctorID:id,isAccepted:1}).populate('patientID');
+    res.render('doctorDashboard',{doctor,pendingApps,ongoingApps});
+})
+
+// Doctor Viewing appointment requests
+app.get('/doctor/:id/requests',async (req,res)=>{
+    let {id}=req.params;
+    let doctor =await Doctor.findById(id);
+    let pendingApps = await Appointment.find({doctorID:id,isAccepted:0}).populate('patientID');
+    // let ongoingApps=await Appointment.find({doctorID:id,isAccepted:1}).populate('patientID');
+    res.render('doctorAppointmentRequests',{doctor,pendingApps});
+})
+
+// Doctor accepting appointment request
+app.post('/doctor/:id/requests/:appID',async (req,res)=>{
+    const {id,appID} = req.params;
+    let appointment = await Appointment.findById(appID);
+    appointment.isAccepted = 1;
+    await appointment.save();
+    let debug = await Appointment.findById(appID);
+    console.log("Checking if appointment is accepted or not");
+    console.log(debug);
+    res.redirect(`/doctor/${id}/requests`);
+})
+
+// doctor rejecting appointment request
+app.delete('/doctor/:id/requests/:appID',async (req,res)=>{
+    const {id,appID} = req.params;
+    let appointment = await Appointment.findById(appID);
+    appointment.isAccepted = 2;
+    await appointment.save();
+    let debug = await Appointment.findById(appID);
+    console.log("Checking if appointment is rejected or not");
+    console.log(debug);
+    res.redirect(`/doctor/${id}/requests`);
+})
 // --------------------------------------------------------------------------------------------------------------
 //###### DOCTOR END #######
 
@@ -136,18 +178,27 @@ app.post('/patientSignup',async (req,res)=>{
 // directly to patientDashboard
 app.get('/patient/:id',async (req,res)=>{
     let {id}=req.params;
-    let account=await Patient.findById(id);
-    res.render('patientDashboard',{account});
+    let patient=await Patient.findById(id);
+    let pendingApps=await Appointment.find({patientID:id,isAccepted:0}).populate('doctorID');
+    let ongoingApps=await Appointment.find({patientID:id,isAccepted:1}).populate('doctorID');
+    let rejectedApps=await Appointment.find({patientID:id,isAccepted:2}).populate('doctorID');
+    res.render('patientDashboard',{patient,pendingApps,ongoingApps,rejectedApps});
 })
 
-// view list of all doctors in our database
+// view list of doctors in choosen category
 app.get('/patient/:id/viewdoctors',async (req,res)=>{
     let {id}=req.params;
+    let {query}=req.query;
+    if(!query)
+        query='all';
     let account=await Patient.findById(id);
-    let doctorData=await Doctor.find({});
-    res.render('patientViewingDoctors.ejs',{account,doctorData});
+    let doctorData;
+    if(query==='all')
+        doctorData=await Doctor.find({isVerified : 1});
+    else
+        doctorData=await Doctor.find({specialization:query,isVerified : 1});
+    res.render('patientViewingDoctors.ejs',{account,doctorData,query,categories});
 })
-
 // view a particular doctor
 app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
     let {id,docid}=req.params;
@@ -159,24 +210,45 @@ app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
 // make an appointment with a particular doctor
 app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
     let {id,docid}=req.params;
-    let account=await Patient.findById(id);
+    // let account=await Patient.findById(id);
     const foundDoctor = await Doctor.findById(docid);
+    const foundPatient = await Patient.findById(id);
+
     let newAppointment = new Appointment();
-    newAppointment.doctorID.push(foundDoctor);
+    // adding doctor and patient id to appointment object
+    newAppointment.doctorID=foundDoctor;
+    newAppointment.patientID=foundPatient;
+
+    // save the appointment in database
     const appointmentSaved = await newAppointment.save();
+
+    // add appointment id in doctors appointmentRequest 
     foundDoctor.appointmentRequest.push(appointmentSaved);
-    const asdf = await foundDoctor.save();
+    await foundDoctor.save();
+
+    // add appointment id in patient appointmentRequest 
+    foundPatient.appointmentRequest.push(appointmentSaved);
+    await foundPatient.save();
 
     // redirect to the doctor profile view page 
     res.redirect(`/patient/${id}/viewdoctors/${docid}`);
 })
 // Patient Dashboard ends here
+
+//Appointment Window of patient
+app.get('/appointment/:id', async (req,res)=>{
+    const {id} = req.params;
+    const appointment = await Appointment.findById(id);
+    const doctor = await Doctor.findById(appointment.doctorID);
+    const patient = await Patient.findById(appointment.patientID);
+    res.render('appointmentWindow', {appointment,patient,doctor});
+})
 // --------------------------------------------------------------------------------------------------------------
 //###### PATIENT END #######
 
 
 
-//###### ADMIN STARTt #######
+//###### ADMIN START #######
 
 app.get('/admin',(req,res)=>{
     res.render('adminlogin');
@@ -228,7 +300,6 @@ app.get('/admin/:id', async(req,res)=>{
     res.render('adminDashboard',{ data ,doctor});
 })
 
-
 app.patch('/admin/:adid/:docid', async(req,res)=>{
     const {adid , docid} = req.params;
     Doctor.findByIdAndUpdate(docid,{ "isVerified" : "1"}, function(err,result){
@@ -256,3 +327,4 @@ app.delete('/admin/:adid/:docid', async(req,res)=>{
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
+

@@ -4,8 +4,8 @@ const Doctor = require('./doctor.js');
 const Schema = mongoose.Schema;
 
 const appointmentSchema = new mongoose.Schema({
-    // patientID : [{type : Schema.Types.ObjectId,ref:'Patient'}],
-    doctorID : [{type : Schema.Types.ObjectId,ref :'Doctor'}],
+    patientID : {type : Schema.Types.ObjectId,ref:'Patient'},
+    doctorID : {type : Schema.Types.ObjectId,ref :'Doctor'},
     isAccepted: {
         type:Number,
         default:0
