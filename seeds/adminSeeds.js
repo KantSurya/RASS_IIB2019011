@@ -9,8 +9,13 @@ const adminseedprod = {
     password    :   "password",
 }
 
+const deleteAll = async ()=>{
+    await Admin.deleteMany({});
+}
 const admintoinsert = new Admin(adminseedprod);
-admintoinsert.save()
+
+deleteAll()
+.then(()=> admintoinsert.save())
 .then(()=>{
     console.log("Admin added in DB");
 })

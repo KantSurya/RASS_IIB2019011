@@ -40,7 +40,11 @@ const seedCollection=async()=>{
 }
 
 emptyCollection()
-    .then(()=>seedCollection());
+.then(()=>seedCollection())
+.then(()=>console.log("Patient Added in DB"))
+.catch(()=>{
+    console.log("Error in adding patient")
+})
 
 
 

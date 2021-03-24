@@ -48,7 +48,7 @@ const deleteAll = async ()=>{
 deleteAll()
 .then(async ()=>{
     const res = await Doctor.insertMany(doctorSeeds);
-    console.log(res);
+    console.log("Doctor added in DB");
 })
 .catch((err)=>{
     console.log("Error in deleting all Doctors Seed",err);

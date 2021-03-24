@@ -31,3 +31,17 @@
 
 
 01. Admin Dashboard UI Added
+
+
+
+
+24-03-2020
+
+01. /doctorDashboard.ejs
+    added cards for approved appointments
+02. /doctorAppointmentRequest.ejs
+    added cards for pending appointments 
+03. /patientDashboard.ejs
+    // pending, ongoing, rejected appointment cards added
+04. /patientViewingDoctors.ejs
+    // added sort doctors by category feature, // need to work more on design part 

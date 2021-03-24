@@ -37,7 +37,7 @@
 <div class="team-boxed">
     <div class="container">
         <div class="intro">
-            <h2 class="text-center">New Requests </h2>
+            <h2 class="text-center"><%= ((doctor.length) ? "Pending doctors" : "No pending requests from doctors") %></h2>
         </div>
         <div class="row people">
             <% for(let doc of doctor){ %>
@@ -49,9 +49,9 @@
                         <p class="description">Licence - <%= doc.license %></p>
                         <div class="d-flex flex-row justify-content-center">
                             <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=PATCH" method="POST" class="p-2">
-                            <button class="btn btn-success">Accept</button>
+                                <button class="btn btn-success">Accept</button>
                             </form>
-                            <form form action="/admin/<%= data._id %>/<%= doc._id %>?_method=DELETE" method="POST" class="p-2">
+                            <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=DELETE" method="POST" class="p-2">
                                 <button class="btn btn-danger">Reject</button>
                             </form>
                         </div>

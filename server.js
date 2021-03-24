@@ -9,7 +9,7 @@ const Doctor = require('./models/doctor');
 const Admin = require('./models/admin');
 const Patient = require('./models/patient');
 const Appointment=require('./models/appointment');
-
+const categories=['dentist','dermatologist','gynecologist','pediatrician'];
 // --------------------------------------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -111,6 +111,39 @@ app.get('/doctor/:id',async (req,res)=>{
     let ongoingApps=await Appointment.find({doctorID:id,isAccepted:1}).populate('patientID');
     res.render('doctorDashboard',{doctor,pendingApps,ongoingApps});
 })
+
+// Doctor Viewing appointment requests
+app.get('/doctor/:id/requests',async (req,res)=>{
+    let {id}=req.params;
+    let doctor =await Doctor.findById(id);
+    let pendingApps = await Appointment.find({doctorID:id,isAccepted:0}).populate('patientID');
+    // let ongoingApps=await Appointment.find({doctorID:id,isAccepted:1}).populate('patientID');
+    res.render('doctorAppointmentRequests',{doctor,pendingApps});
+})
+
+// Doctor accepting appointment request
+app.post('/doctor/:id/requests/:appID',async (req,res)=>{
+    const {id,appID} = req.params;
+    let appointment = await Appointment.findById(appID);
+    appointment.isAccepted = 1;
+    await appointment.save();
+    let debug = await Appointment.findById(appID);
+    console.log("Checking if appointment is accepted or not");
+    console.log(debug);
+    res.redirect(`/doctor/${id}/requests`);
+})
+
+// doctor rejecting appointment request
+app.delete('/doctor/:id/requests/:appID',async (req,res)=>{
+    const {id,appID} = req.params;
+    let appointment = await Appointment.findById(appID);
+    appointment.isAccepted = 2;
+    await appointment.save();
+    let debug = await Appointment.findById(appID);
+    console.log("Checking if appointment is rejected or not");
+    console.log(debug);
+    res.redirect(`/doctor/${id}/requests`);
+})
 // --------------------------------------------------------------------------------------------------------------
 //###### DOCTOR END #######
 
@@ -145,18 +178,27 @@ app.post('/patientSignup',async (req,res)=>{
 // directly to patientDashboard
 app.get('/patient/:id',async (req,res)=>{
     let {id}=req.params;
-    let account=await Patient.findById(id);
-    res.render('patientDashboard',{account});
+    let patient=await Patient.findById(id);
+    let pendingApps=await Appointment.find({patientID:id,isAccepted:0}).populate('doctorID');
+    let ongoingApps=await Appointment.find({patientID:id,isAccepted:1}).populate('doctorID');
+    let rejectedApps=await Appointment.find({patientID:id,isAccepted:2}).populate('doctorID');
+    res.render('patientDashboard',{patient,pendingApps,ongoingApps,rejectedApps});
 })
 
-// view list of all doctors in our database
+// view list of doctors in choosen category
 app.get('/patient/:id/viewdoctors',async (req,res)=>{
     let {id}=req.params;
+    let {query}=req.query;
+    if(!query)
+        query='all';
     let account=await Patient.findById(id);
-    let doctorData=await Doctor.find({});
-    res.render('patientViewingDoctors.ejs',{account,doctorData});
+    let doctorData;
+    if(query==='all')
+        doctorData=await Doctor.find({isVerified : 1});
+    else
+        doctorData=await Doctor.find({specialization:query,isVerified : 1});
+    res.render('patientViewingDoctors.ejs',{account,doctorData,query,categories});
 })
-
 // view a particular doctor
 app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
     let {id,docid}=req.params;
@@ -193,22 +235,20 @@ app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
 })
 // Patient Dashboard ends here
 
-//Appointment(chat) Window of patient
+//Appointment Window of patient
 app.get('/appointment/:id', async (req,res)=>{
     const {id} = req.params;
     const appointment = await Appointment.findById(id);
-    console.log(appointment);
     const doctor = await Doctor.findById(appointment.doctorID);
     const patient = await Patient.findById(appointment.patientID);
     res.render('appointmentWindow', {appointment,patient,doctor});
-    
 })
 // --------------------------------------------------------------------------------------------------------------
 //###### PATIENT END #######
 
 
 
-//###### ADMIN STARTt #######
+//###### ADMIN START #######
 
 app.get('/admin',(req,res)=>{
     res.render('adminlogin');
@@ -259,7 +299,6 @@ app.get('/admin/:id', async(req,res)=>{
     const doctor = await Doctor.find({isVerified : 0}); 
     res.render('adminDashboard',{ data ,doctor});
 })
-
 
 app.patch('/admin/:adid/:docid', async(req,res)=>{
     const {adid , docid} = req.params;

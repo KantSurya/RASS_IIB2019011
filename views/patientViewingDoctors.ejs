@@ -8,17 +8,55 @@
           </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                <!-- <li>
+                    <form action="/patient/<%=account._id%>/viewdoctors" class="d-flex">
+                        <select name="query" id="query">
+                            <option value="all">All</option>
+                            <% for(let category of categories){ %>
+                                <option value="<%=category%>"><%=category%></option>
+                            <% } %>
+                        </select>
+                        <button class="btn btn-outline-success" type="submit">Search</button> 
+                    </form>
+                </li> -->
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Select Specialization
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li> -->
                 <li class="nav-item mr-5">
                     <a class="nav-link active" aria-current="page" href="/patient/<%= account._id %>">
                         Hi, <%= account.firstName %>
                     </a>
-                </li>
+                </li>                
             </ul>
         </div>
     </div>
 </nav>
-<h1> 
-    All Doctors in our Database
+
+<form action="/patient/<%=account._id%>/viewdoctors">
+    <label for="query">Select specialization of doctors: </label>
+    <select name="query" id="query">
+        <option value="all">All</option>
+        <% for(let category of categories){ %>
+            <option value="<%=category%>"><%=category%></option>
+        <% } %>
+    </select>
+    <button>Submit</button>
+</form>
+<h1> All
+     <% if(query==='all') {%>
+        <%="Doctors"%>
+     <% } else { %>
+      <%=query%>
+      <% } %> 
+     in our Database
 </h1>
 <% for(let doc of doctorData){ %>
     <li>
