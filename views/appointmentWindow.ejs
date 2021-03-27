@@ -4,18 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><%= (isPat==1)? "Patient" : "Doctor" %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="stylesheet" href="/css/appointmentWindow.css">
 </head>
 <body>
-    <h1> Welcome to appointment window  </h1>
-    <h3>
-        Patient : <%= patient.firstName + " " + patient.lastName %>
-    </h3>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid ">
+            <a class="navbar-brand" href="/">Sahayata</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mr-5">
+                        <a class="nav-link active" aria-current="page" href="/<%= (isPat==1)? "patient" : "doctor" %>/<%= (isPat==1)? patient._id :  doctor._id %>">
+                            Hi, <%= (isPat==1)? patient.firstName : doctor.firstName %>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div align="center">
+        <h1> Welcome to appointment window  </h1>
+        <h3>
+            Patient : <%= patient.firstName + " " + patient.lastName %>
+        </h3>
 
-    <h3>
-        Doctor : <%= doctor.firstName + " " + doctor.lastName %>
-    </h3>
+        <h3>
+            Doctor : <%= doctor.firstName + " " + doctor.lastName %>
+        </h3>
+    </div>
+    <!-- // Chat ui HTML starts from here -->
+    <div class="container d-flex justify-content-center">
+        <div class="card mt-5">
+            <div class="d-flex flex-row justify-content-between p-3 adiv text-white"><span class="mr-auto ml-auto">Chat History</span></div>
+                <div>
+                    <% for(let message of appointment.messageBody){ %>
+                        <!-- // if this message is sent from the current user, then align it to right, like in whatsapp -->
+                        <div class="<%= ((message.isPat!=isPat) ? "d-flex flex-row p-3" : "d-flex flex-row-reverse p-3") %> </div>"> 
+                            <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30" height="30">
+                            <div class="<%= ((message.isPat==isPat) ? "currentUserCol ml-2 p-3 help" : "otherUserCol ml-2 p-3 help") %>"><%= message.text %></div>
+                        </div>
+                    <% } %>
+                </div>
+                    <!-- // button to send message //////////////////////////////////////////////// --> 
+                    <form action="/appointment/<%=isPat + appointment._id %> "class="input-group done" method="POST">
+                        <input type="text" name="messageBody" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+                        <button class="btn btn-outline-secondary"><i class="fa fa-paper-plane"></i></button>
+                    </form>
+            </div>
+        </div>
 
-    <a href="/patient/<%=patient._id%>">Back To Dashboard</a>
+    </div>
+    <!-- // Chat UI HTML ends here -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

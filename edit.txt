@@ -45,3 +45,14 @@
     // pending, ongoing, rejected appointment cards added
 04. /patientViewingDoctors.ejs
     // added sort doctors by category feature, // need to work more on design part 
+
+27-03-2020
+
+    // Message functionality added between doctor and patient
+
+01. /appointmentWindow.ejs
+    added chat bot ui, scroll feature added
+02. /models/appointment.ejs
+        messageBody added in appointment schema, isPar = 1 represents message is sent by the patient
+03. /server.js
+        appointment window has 1 or 0 at starting, 1 : if patient is accessing the appointment Window
