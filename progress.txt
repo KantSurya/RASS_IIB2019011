@@ -8,6 +8,8 @@
     -> Doctor Signup (UC 11) [complete]
     -> Doctor Login | doctor has to wait for admin to accept its request (UC 12) [complete]
     -> Doctor Dashboard | View Appointments (UC 13) [working]
+    -> Appointment UI 
+    -> Message functionality implemented
 
 -> Patient 
     -> Patient Signup (UC 01) [complete]
@@ -16,3 +18,5 @@
     -> View All Doctors (UC 5) [working]
     -> Send an appointment request (UC 5) [complete]
     -> Appointment route defined  (UC 6) [working]
+    -> Appointment UI
+    -> Message functionality implemented

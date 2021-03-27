@@ -235,13 +235,40 @@ app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
 })
 // Patient Dashboard ends here
 
-//Appointment Window of patient
-app.get('/appointment/:id', async (req,res)=>{
+
+//Appointment Window 
+// 1 represents patient has opened the appointment window
+app.get('/appointment/1:id/', async (req,res)=>{
     const {id} = req.params;
     const appointment = await Appointment.findById(id);
     const doctor = await Doctor.findById(appointment.doctorID);
     const patient = await Patient.findById(appointment.patientID);
-    res.render('appointmentWindow', {appointment,patient,doctor});
+    res.render('appointmentWindow', {appointment,patient,doctor,isPat : 1});
+})
+// 0 represents doctor has opened the appointment window
+app.get('/appointment/0:id/', async (req,res)=>{
+    const {id} = req.params;
+    const appointment = await Appointment.findById(id);
+    const doctor = await Doctor.findById(appointment.doctorID);
+    const patient = await Patient.findById(appointment.patientID);
+    res.render('appointmentWindow', {appointment,patient,doctor,isPat : 0});
+})
+// message sent
+// this post route handles message sent from both doctor and patient
+app.post('/appointment/:id',async (req,res)=>{
+    const {id} = req.params;
+    const {messageBody} = req.body;
+    const isPat = id[0];
+    // // isPat = 0 , patient sent the message
+    const newMessageBody = {
+        text : messageBody,
+        isPat : isPat
+    }
+    const appID = id.slice(1);
+    const appointment = await Appointment.findById(appID);
+    appointment.messageBody.push(newMessageBody);
+    appointment.save();
+    res.redirect(`/appointment/${id}`);
 })
 // --------------------------------------------------------------------------------------------------------------
 //###### PATIENT END #######

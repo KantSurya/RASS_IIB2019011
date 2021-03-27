@@ -4,11 +4,23 @@ const Doctor = require('./doctor.js');
 const Schema = mongoose.Schema;
 
 const appointmentSchema = new mongoose.Schema({
+    messageBody : [
+        {
+            text : {
+                type : String,
+                default : " "
+            },
+            isPat : {
+                type : Number,
+                required : true
+            }
+        }
+    ],
     patientID : {type : Schema.Types.ObjectId,ref:'Patient'},
     doctorID : {type : Schema.Types.ObjectId,ref :'Doctor'},
     isAccepted: {
-        type:Number,
-        default:0
+        type : Number,
+        default : 0
     }
 });
 
