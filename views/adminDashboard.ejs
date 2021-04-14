@@ -46,7 +46,7 @@
                         <h3 class="name"><%=doc.firstName%>  <%= doc.lastName %></h3>
                         <p class="title"><%= doc.specialization %></p>
                         <p class="description">Age - <%= doc.age %></p>
-                        <p class="description">Licence - <%= doc.license %></p>
+                        <a class="description" href=<%= doc.license %>>License</a>
                         <div class="d-flex flex-row justify-content-center">
                             <form action="/admin/<%= data._id %>/<%= doc._id %>?_method=PATCH" method="POST" class="p-2">
                                 <button class="btn btn-success">Accept</button>

@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV !== "production"){
+    require('dotenv').config();
+}
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -10,6 +13,10 @@ const Admin = require('./models/admin');
 const Patient = require('./models/patient');
 const Appointment=require('./models/appointment');
 const categories=['dentist','dermatologist','gynecologist','pediatrician'];
+const {storage} = require('./cloudinary');
+const multer  = require('multer');
+const upload = multer({storage});
+
 // --------------------------------------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/sahayata', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
@@ -78,8 +85,10 @@ app.get('/doctorSignup',(req,res)=>{
     res.render('doctorSignup');
 })
 
-app.post('/doctorSignup', (req,res)=>{
-    const {firstName,lastName,email,password,age,license,specialization} = req.body;
+app.post('/doctorSignup', (upload.single('license')),(req,res)=>{
+    const {firstName,lastName,email,password,age,specialization} = req.body;
+    const license = req.file.path;
+    console.log(license);
     const newDoctor = {
         firstName   :       firstName, 
         lastName    :       lastName,
