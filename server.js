@@ -44,6 +44,10 @@ app.get('/signup',(req,res)=>{
     res.redirect('/doctorSignup');
 })
 
+app.get('/about',(req,res)=>{
+    res.redirect('/');
+});
+
 //###### LOGIN START #######
 // --------------------------------------------------------------------------------------------------------------
 app.get('/login',(req,res)=>{
