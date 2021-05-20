@@ -198,11 +198,13 @@ app.get('/patient/:id',async (req,res)=>{
     res.render('patientDashboard',{patient,pendingApps,ongoingApps,rejectedApps});
 })
 
-// app.delete('/patient/:id/deleteAppointment/:appid',async(req,res)=>{
-//     let {id,appid}=req.params;
-//     await Appointment.findByIdAndDelete({id});
-//     res.redirect(`/patient/${id}`);
-// })
+app.delete('/patient/:id/deleteAppointment/:appid',async(req,res)=>{
+    let {id,appid}=req.params;
+    let appointment=await Appointment.findById(appid);  
+    appointment.isAccepted=3;
+    await appointment.save();
+    res.redirect(`/patient/${id}`);
+})
 
 // view list of doctors in choosen category
 app.get('/patient/:id/viewdoctors',async (req,res)=>{
@@ -253,7 +255,7 @@ app.post('/patient/:id/makeappointment/:docid',async (req,res)=>{
     await foundPatient.save();
 
     // redirect to the doctor profile view page 
-    res.redirect(`/patient/${id}/viewdoctors/${docid}`);
+    res.redirect(`/patient/${id}/viewdoctors`);
 })
 // Patient Dashboard ends here
 

@@ -31,11 +31,6 @@ const appointmentSchema = new mongoose.Schema({
         default : "No description"
     }
 });
-// appointmentSchema.pre('remove',function(next){
-//     console.log('pre remove:');
-//     console.log(this);
-//     next();
-// });
 
 const Appointment = mongoose.model('Appointment',appointmentSchema);
 module.exports = Appointment;
