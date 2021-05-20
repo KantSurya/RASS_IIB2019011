@@ -73,7 +73,7 @@
                         <p class="description">Age - <%= appointment.doctorID.age %></p>
                         <p class="description">Title - <%= appointment.title %></p>
                         <div class="d-flex flex-row justify-content-center">
-                            <form action="" method="GET" class="p-2">
+                            <form action="/patient/<%=patient.id%>/deleteAppointment/<%=appointment.id%>?_method=DELETE" method="POST" class="p-2">
                                 <button class="btn btn-danger">Delete</button>
                             </form>
                         </div>
@@ -101,7 +101,7 @@
                         <p class="description">Age - <%= appointment.doctorID.age %></p>
                         <p class="description">Title - <%= appointment.title %></p>
                         <div class="d-flex flex-row justify-content-center">
-                            <form action="" method="GET" class="p-2">
+                            <form action="/patient/<%=patient.id%>/deleteAppointment/<%=appointment.id%>?_method=DELETE" method="POST" class="p-2">
                                 <button class="btn btn-success">Acknowledge</button>
                             </form>
                         </div>
@@ -111,8 +111,6 @@
         </div>
     </div>
 </div>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>

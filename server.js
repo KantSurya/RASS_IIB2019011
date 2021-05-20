@@ -198,6 +198,12 @@ app.get('/patient/:id',async (req,res)=>{
     res.render('patientDashboard',{patient,pendingApps,ongoingApps,rejectedApps});
 })
 
+// app.delete('/patient/:id/deleteAppointment/:appid',async(req,res)=>{
+//     let {id,appid}=req.params;
+//     await Appointment.findByIdAndDelete({id});
+//     res.redirect(`/patient/${id}`);
+// })
+
 // view list of doctors in choosen category
 app.get('/patient/:id/viewdoctors',async (req,res)=>{
     let {id}=req.params;
