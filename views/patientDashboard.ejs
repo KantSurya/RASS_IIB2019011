@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome <%= patient.firstName %> | Sahayata</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="/css/admindash.css">
 </head>
@@ -17,18 +18,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-5">
-                    <a class="nav-link active" aria-current="page" href="/patient/<%= patient._id %>">
-                        Hi, <%= patient.firstName %>
-                    </a>
+                    <a class="nav-link active" aria-current="page" href="/patient/<%= patient._id %>"> Hi, <%= patient.firstName %> </a>
+                </li>
+                <li class="nav-item mr-5">
+                    <a class="nav-link active" aria-current="page" href="/patient/<%=patient._id%>/viewdoctors"> New Thread <i class="fas fa-book-medical"></i> </a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
-<div>    
-    <h3><a href="/patient/<%=patient._id%>/viewdoctors">Make an Appointment | View Pool Of Doctors</a></h3>
-</div>
 
 <!-- // Adding temporary display cards for accepted appointments -->
 

@@ -1,4 +1,15 @@
-<%- include('partials/header.ejs') %>
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Sahayata</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link rel="stylesheet" href="/css/patviewdocs.css">
+
+	</head>
+	<body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid ">
@@ -34,36 +45,72 @@
                     <a class="nav-link active" aria-current="page" href="/patient/<%= account._id %>">
                         Hi, <%= account.firstName %>
                     </a>
-                </li>                
+                </li>     
+                <li class="nav-item mr-5">
+                    <a class="nav-link active" aria-current="page" href="/patient/<%=account._id%>">
+                        Back <i class="fas fa-backspace"></i>
+                    </a>
+                </li>           
             </ul>
         </div>
     </div>
 </nav>
-
-<form action="/patient/<%=account._id%>/viewdoctors">
-    <label for="query">Select specialization of doctors: </label>
-    <select name="query" id="query">
-        <option value="all">All</option>
-        <% for(let category of categories){ %>
-            <option value="<%=category%>"><%=category%></option>
-        <% } %>
-    </select>
-    <button>Submit</button>
-</form>
-<h1> All
+<!-- <h1> All
      <% if(query==='all') {%>
         <%="Doctors"%>
      <% } else { %>
       <%=query%>
       <% } %> 
      in our Database
-</h1>
-<% for(let doc of doctorData){ %>
-    <li>
-        <a href="/patient/<%=account._id%>/viewDoctors/<%=doc._id%>"><%=doc.firstName + " " +  doc.lastName%></a>
-    </li>
-<% } %>
+</h1> -->
 
-<a href="/patient/<%=account._id%>">Back To Dashboard</a>
+
+<section class="ftco-section">
+    <div class="container">
+        <div>
+            <h1 style="display: inline-block;"> Showing: <%=query.charAt(0).toUpperCase() + query.slice(1)%></h1>
+            <form action="/patient/<%=account._id%>/viewdoctors" class="form-group" style="float:right">
+                <span>
+                <label for="query">Filter by: </label>
+                <select name="query" id="query" class="form-control" style="width:auto;">
+                    <option value="all">All</option>
+                    <% for(let category of categories){ %>
+                        <option value="<%=category%>"><%=category%></option>
+                    <% } %>
+                </select>
+                <button class="btn btn-primary">Submit</button>
+            </span>
+            </form>
+        </div>  
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table">
+                    <thead class="thead-primary">
+                      <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Speciality</th>
+                        <th>New Appointement</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let doc of doctorData){ %>
+                            <tr>
+                                <th scope="row" class="scope" ><%=doc.firstName + " " +  doc.lastName%></th>
+                                <td><%= doc.age %></td>
+                                <td><a href="https://<%= doc.license %>" class="btn btn-primary"><%= doc.specialization.charAt(0).toUpperCase() + doc.specialization.slice(1) %></a></td>
+                                <td><a href="/patient/<%=account._id%>/viewDoctors/<%=doc._id%>" class="btn btn-primary">Book Appointement</a></td>
+                            </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <a href="/patient/<%=account._id%>">Back To Dashboard</a> -->
 
 <%- include('partials/footer.ejs') %>
