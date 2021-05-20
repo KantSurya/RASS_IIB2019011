@@ -43,42 +43,25 @@
 
 <div class="container-contact100">
     <div class="wrap-contact100">
-        <form class="contact100-form validate-form">
+        <form class="contact100-form validate-form" action="/patient/<%=account._id%>/makeappointment/<%=doctor._id%>" method="POST">
             <span class="contact100-form-title">
-                Send Us A Message
+                Request an appointment
             </span>
-
-            <label class="label-input100" for="first-name">Tell us your name *</label>
-            <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Type first name">
-                <input id="first-name" class="input100" type="text" name="first-name" placeholder="First name">
-                <span class="focus-input100"></span>
-            </div>
-            <div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Type last name">
-                <input class="input100" type="text" name="last-name" placeholder="Last name">
+            <label class="label-input100" for="title">Title *</label>
+            <div style="min-height: 5vh;" class="wrap-input100">
+                <input id="title" class="input100" type="text" name="title" placeholder="Eg. Cavity Problem">
                 <span class="focus-input100"></span>
             </div>
 
-            <label class="label-input100" for="email">Enter your email *</label>
-            <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                <input id="email" class="input100" type="text" name="email" placeholder="Eg. example@email.com">
-                <span class="focus-input100"></span>
-            </div>
-
-            <label class="label-input100" for="phone">Enter phone number</label>
-            <div class="wrap-input100">
-                <input id="phone" class="input100" type="text" name="phone" placeholder="Eg. +1 800 000000">
-                <span class="focus-input100"></span>
-            </div>
-
-            <label class="label-input100" for="message">Message *</label>
-            <div class="wrap-input100 validate-input" data-validate = "Message is required">
-                <textarea id="message" class="input100" name="message" placeholder="Write us a message"></textarea>
+            <label class="label-input100" for="description">Description *</label>
+            <div style="min-height: 20vh;" class="wrap-input100 validate-input" data-validate = "Description is required">
+                <textarea rows="20" id="description" class="input100" name="description" placeholder="Enter Detail description, example : I am having pain in the right side of my mouth since last 4 days. I took some pain killers, but after a day or two the pain still continues. I am hoping you could help me"></textarea>
                 <span class="focus-input100"></span>
             </div>
 
             <div class="container-contact100-form-btn">
                 <button class="contact100-form-btn">
-                    Send Message
+                    Send Request
                 </button>
             </div>
         </form>

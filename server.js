@@ -221,8 +221,10 @@ app.get('/patient/:id/viewdoctors/:docid',async(req,res)=>{
 })
 
 // make an appointment with a particular doctor
-app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
+app.post('/patient/:id/makeappointment/:docid',async (req,res)=>{
     let {id,docid}=req.params;
+    let {title,description} = req.body;
+
     // let account=await Patient.findById(id);
     const foundDoctor = await Doctor.findById(docid);
     const foundPatient = await Patient.findById(id);
@@ -231,7 +233,8 @@ app.get('/patient/:id/makeappointment/:docid',async (req,res)=>{
     // adding doctor and patient id to appointment object
     newAppointment.doctorID=foundDoctor;
     newAppointment.patientID=foundPatient;
-
+    newAppointment.title = title;
+    newAppointment.description = description;
     // save the appointment in database
     const appointmentSaved = await newAppointment.save();
 

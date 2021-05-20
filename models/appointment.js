@@ -21,6 +21,14 @@ const appointmentSchema = new mongoose.Schema({
     isAccepted: {
         type : Number,
         default : 0
+    },
+    title: {
+        type : String,
+        default : "No title"
+    },
+    description: {
+        type : String,
+        default : "No description"
     }
 });
 
