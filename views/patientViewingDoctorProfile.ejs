@@ -1,4 +1,26 @@
-<%- include('partials/header.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahayata</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/6d1a88741d.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" href="/patientViewingDoctorProfile/images/icons/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/patientViewingDoctorProfile/css/main.css">
+</head>
+<body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid ">
@@ -18,19 +40,138 @@
     </div>
 </nav>
 
-<h2>
-    Name : <%= doctor.firstName %>
-</h2>
-<ul>
-    <li><b>Email :</b> <%= doctor.email %></li>
-    <li><b>Age</b> : <%= doctor.age %></li>
-    <li><b>Specialization</b> : <%= doctor.specialization %> </li>
-</ul>
 
-<a href="/patient/<%=account._id%>/viewdoctors">All Doctors</a>
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <form class="contact100-form validate-form">
+            <span class="contact100-form-title">
+                Send Us A Message
+            </span>
 
-<form action="/patient/<%=account._id%>/makeappointment/<%=doctor._id%>">
-    <button>New Appointment</button>
-</form>
+            <label class="label-input100" for="first-name">Tell us your name *</label>
+            <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Type first name">
+                <input id="first-name" class="input100" type="text" name="first-name" placeholder="First name">
+                <span class="focus-input100"></span>
+            </div>
+            <div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Type last name">
+                <input class="input100" type="text" name="last-name" placeholder="Last name">
+                <span class="focus-input100"></span>
+            </div>
 
-<%- include('partials/footer.ejs') %>
+            <label class="label-input100" for="email">Enter your email *</label>
+            <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                <input id="email" class="input100" type="text" name="email" placeholder="Eg. example@email.com">
+                <span class="focus-input100"></span>
+            </div>
+
+            <label class="label-input100" for="phone">Enter phone number</label>
+            <div class="wrap-input100">
+                <input id="phone" class="input100" type="text" name="phone" placeholder="Eg. +1 800 000000">
+                <span class="focus-input100"></span>
+            </div>
+
+            <label class="label-input100" for="message">Message *</label>
+            <div class="wrap-input100 validate-input" data-validate = "Message is required">
+                <textarea id="message" class="input100" name="message" placeholder="Write us a message"></textarea>
+                <span class="focus-input100"></span>
+            </div>
+
+            <div class="container-contact100-form-btn">
+                <button class="contact100-form-btn">
+                    Send Message
+                </button>
+            </div>
+        </form>
+
+        <div class="contact100-more flex-col-c-m" style="background-image: url('/patientViewingDoctorProfile/images/bg-01.jpg');">
+            <div class="flex-w size1 p-b-47">
+                <div class="flex-col size2">
+                    <!-- <img src="https://lh3.googleusercontent.com/proxy/AWX227dfWlY0d9wucNqbUOsNnU9DoxNQM0PyslkhHCaHdczyq4ucc4QSPrHaNIhi-6G7cJ8rBKsRx2lGf-3qbP5lXzhhdVIV6CaOQB_VJNjPmA" alt=""> -->
+                    <span class="txt1 p-b-20">
+                        <%=doctor.firstName+" "+doctor.lastName%>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex-w size1 p-b-47">
+                <div class="txt1 p-r-25">
+                    <span class="lnr lnr-briefcase"></span>
+                </div>
+
+                <div class="flex-col size2">
+                    <span class="txt1 p-b-20">
+                        Specialization
+                    </span>
+
+                    <span class="txt2">
+                        <%=doctor.specialization[0].toUpperCase()+doctor.specialization.slice(1)%>
+                    </span>
+                </div>
+            </div>
+
+            <div class="dis-flex size1 p-b-47">
+                <div class="txt1 p-r-25">
+                    <span class="lnr lnr-hourglass"></span>
+                </div>
+
+                <div class="flex-col size2">
+                    <span class="txt1 p-b-20">
+                        Age
+                    </span>
+
+                    <span class="txt2">
+                        <%=doctor.age%>
+                    </span>
+                </div>
+            </div>
+
+            <div class="dis-flex size1 p-b-47">
+                <div class="txt1 p-r-25">
+                    <span class="lnr lnr-envelope"></span>
+                </div>
+
+                <div class="flex-col size2">
+                    <span class="txt1 p-b-20">
+                        Email
+                    </span>
+
+                    <span class="txt2">
+                        <%=doctor.email%>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dropDownSelect1"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+<script src="patientViewingDoctorProfile/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="patientViewingDoctorProfile/vendor/animsition/js/animsition.min.js"></script>
+<script src="patientViewingDoctorProfile/vendor/bootstrap/js/popper.js"></script>
+<script src="patientViewingDoctorProfile/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="patientViewingDoctorProfile/vendor/select2/select2.min.js"></script>
+<script>
+    $(".selection-2").select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $('#dropDownSelect1')
+    });
+</script>
+<script src="patientViewingDoctorProfile/vendor/daterangepicker/moment.min.js"></script>
+<script src="patientViewingDoctorProfile/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="patientViewingDoctorProfile/vendor/countdowntime/countdowntime.js"></script>
+<script src="patientViewingDoctorProfile/js/main.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-23581568-13');
+</script>
+</body>
+</html>
