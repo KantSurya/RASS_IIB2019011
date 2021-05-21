@@ -8,8 +8,9 @@ const doctorSeeds = [
         email : "severus@gmail.com",
         password : "always",
         age : 47,
-        license : "snape license",
-        specialization : "dentist"
+        license : "https://st4.depositphotos.com/5532432/20189/v/1600/depositphotos_201890958-stock-illustration-business-licence-flat-design-icon.jpg",
+        specialization : "dentist",
+        isVerified: 1
     },
     {
         firstName : "Carry",
@@ -17,8 +18,9 @@ const doctorSeeds = [
         email : "carry@gmail.com",
         password : "minny",
         age : 42,
-        license : "carrylicense",
+        license : "https://st4.depositphotos.com/5532432/20189/v/1600/depositphotos_201890958-stock-illustration-business-licence-flat-design-icon.jpg",
         specialization : "pediatrician",
+        isVerified: 1
     },
     {
         firstName : "Bron",
@@ -26,8 +28,8 @@ const doctorSeeds = [
         email : "bron@gmail.com",
         password : "chermoine",
         age : 36,
-        license : "bronlicense",
-        specialization : "gynecologist",
+        license : "https://st4.depositphotos.com/5532432/20189/v/1600/depositphotos_201890958-stock-illustration-business-licence-flat-design-icon.jpg",
+        specialization : "gynecologist"
     },
     {
         firstName : "Chermoine",
@@ -35,7 +37,7 @@ const doctorSeeds = [
         email : "chermoine@gmail.com",
         password : "rum",
         age : 35,
-        license : "chermoinelicense",
+        license : "https://st4.depositphotos.com/5532432/20189/v/1600/depositphotos_201890958-stock-illustration-business-licence-flat-design-icon.jpg",
         specialization : "dermatologist"
     }
 ]
