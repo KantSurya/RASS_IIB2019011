@@ -248,6 +248,11 @@ app.post('/patient/:id/makeappointment/:docid',async (req,res)=>{
     newAppointment.description = description;
 
     // add basic message in the appointment window
+    let patMessage = {
+        text : `Description: ${newAppointment.description}`,
+        isPat : 1
+    }
+    newAppointment.messageBody.push(patMessage);
     let docMessage = {
         text : `Hello ${foundPatient.firstName}`,
         isPat : 0
