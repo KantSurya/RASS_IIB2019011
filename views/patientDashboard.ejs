@@ -93,7 +93,7 @@
             <h2 class="text-center">Rejected Appointments</h2>
         </div>
         <div class="row people">
-            <% for(let appointment of ongoingApps){ %>
+            <% for(let appointment of rejectedApps){ %>
                 <div class="col-md-6 col-lg-4 item">
                     <div class="box"><img class="rounded-circle" src="/assets/patpro.jpg">
                         <h3 class="name"><%=appointment.doctorID.firstName%>  <%= appointment.doctorID.lastName %></h3>

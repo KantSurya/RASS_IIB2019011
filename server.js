@@ -68,9 +68,11 @@ app.post('/login',async (req,res)=>{
         account=await Doctor.findOne({email:username,password:password});
         console.log(account);
         if(account){
-            if(account.isVerified == 0) res.send("Please wait for the admin");          
-            if(account.isVerified == 2) res.send("You are rejected soory :(");          
-            else res.redirect(`/doctor/${account._id}`);
+            let text = "Please wait for the admin to review your application !! ";
+            if(account.isVerified == 2) text = "Your application was rejected by admin :(";
+            if(account.isVerified == 0 || account.isVerified == 2)
+            return res.render('adminApproval',{message : text})
+            else return res.redirect(`/doctor/${account._id}`);
         }
         else{
             res.redirect('/login');
@@ -139,6 +141,7 @@ app.post('/doctor/:id/requests/:appID',async (req,res)=>{
     const {id,appID} = req.params;
     let appointment = await Appointment.findById(appID);
     appointment.isAccepted = 1;
+    appointment.messageBody
     await appointment.save();
     let debug = await Appointment.findById(appID);
     console.log("Checking if appointment is accepted or not");
@@ -243,6 +246,23 @@ app.post('/patient/:id/makeappointment/:docid',async (req,res)=>{
     newAppointment.patientID=foundPatient;
     newAppointment.title = title;
     newAppointment.description = description;
+
+    // add basic message in the appointment window
+    let docMessage = {
+        text : `Hello ${foundPatient.firstName}`,
+        isPat : 1
+    }
+    newAppointment.messageBody.push(docMessage);
+    docMessage = {
+        text : `I have seen your description`,
+        isPat : 1
+    }
+    newAppointment.messageBody.push(docMessage);
+    docMessage = {
+        text : `I will soon get back to you`,
+        isPat : 1
+    }
+    newAppointment.messageBody.push(docMessage);
     // save the appointment in database
     const appointmentSaved = await newAppointment.save();
 
@@ -374,7 +394,10 @@ app.delete('/admin/:adid/:docid', async(req,res)=>{
 
 //###### ADMIN END #######
 
-
+// ERROR 404 ROUTE:----------------------------------------
+app.get('*',(req,res)=>{
+	res.render('PageNotFound');
+})
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 });
