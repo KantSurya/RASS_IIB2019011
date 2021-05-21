@@ -250,17 +250,17 @@ app.post('/patient/:id/makeappointment/:docid',async (req,res)=>{
     // add basic message in the appointment window
     let docMessage = {
         text : `Hello ${foundPatient.firstName}`,
-        isPat : 1
+        isPat : 0
     }
     newAppointment.messageBody.push(docMessage);
     docMessage = {
         text : `I have seen your description`,
-        isPat : 1
+        isPat : 0
     }
     newAppointment.messageBody.push(docMessage);
     docMessage = {
         text : `I will soon get back to you`,
-        isPat : 1
+        isPat : 0
     }
     newAppointment.messageBody.push(docMessage);
     // save the appointment in database
