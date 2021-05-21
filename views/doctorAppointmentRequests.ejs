@@ -46,8 +46,9 @@
                     <div class="box"><img class="rounded-circle" src="/assets/docpro.jpg">
                         <h3 class="name"><%=appointment.patientID.firstName%>  <%= appointment.patientID.lastName %></h3>
                         <p class="title"><%= doctor.specialization %></p>
-                        <p class="description">Age - <%= appointment.patientID.age %></p>
-                        <p class="description">Title - <%= appointment.title %></p>
+                        <p class="description"><b>Age</b> - <%= appointment.patientID.age %></p>
+                        <p class="description"><b>Title</b> - <%= appointment.title %></p>
+                        <p class="description"><b>Description</b> - <%= appointment.description %></p>
                         <div class="d-flex flex-row justify-content-center">
                             <form action="/doctor/<%=doctor._id %>/requests/<%=appointment._id %>" method="POST" class="p-2">
                                 <button class="btn btn-success">Accept</button>
